@@ -2,14 +2,18 @@
 
 set -eu
 
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
 METABASE_VERSION=`cat ./bin/version`
 METABASE_DIR="$1/target/uberjar"
 METABASE_JAR="$METABASE_DIR/metabase.jar"
 
-if [[ -z "${METABASE_URL}" ]]; then
-  METABASE_URL="http://downloads.metabase.com/v$METABASE_VERSION/metabase.jar"
+if [ -f "$ENV_DIR/METABASE_URL" ]; then
+  export "METABASE_URL=$(cat $3/METABASE_URL)"
 else
-  METABASE_VERSION="n/a"
+  METABASE_URL="http://downloads.metabase.com/v$METABASE_VERSION/metabase.jar"
 fi
 
 mkdir -p $METABASE_DIR
